@@ -26,12 +26,10 @@ void ComplexPlane::draw(RenderTarget& target, RenderStates states) const
 {
     target.draw(m_vArray);
 }
-
-void ComplexPlane::updateRender()
+// Updated it for multithreading 
+void ComplexPlane::computeRows(int startRow, int endRow)
 {
-    if (m_state == State::CALCULATING)
-    {
-        for (int j = 0; j < m_pixel_size.x; j++)
+    for (int j = 0; j < m_pixel_size.x; j++)
         {
             for (int i = 0; i < m_pixel_size.y; i++)
             {
@@ -50,9 +48,30 @@ void ComplexPlane::updateRender()
 
             }
         }
+}
+// Updated it for multithreading 
+void ComplexPlane::updateRender()
+{
+    if (m_state == State::CALCULATING)
+    {
+        int totalRows = m_pixel_size.y;
+
+        // 4 threads splitting the image vertically
+        std::thread t1(&ComplexPlane::computeRows, this, 0, totalRows / 4);
+        std::thread t2(&ComplexPlane::computeRows, this, totalRows / 4, totalRows / 2);
+        std::thread t3(&ComplexPlane::computeRows, this, totalRows / 2, 3 * totalRows / 4);
+        std::thread t4(&ComplexPlane::computeRows, this, 3 * totalRows / 4, totalRows);
+
+        // Wait for all 4 threads to finish
+        t1.join();
+        t2.join();
+        t3.join();
+        t4.join();
+
         m_state = State::DISPLAYING;
     }
 }
+
 void ComplexPlane::zoomIn()
 {
     m_zoomCount++;
