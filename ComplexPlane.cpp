@@ -4,6 +4,7 @@
 #include <cmath>
 #include <sstream>
 #include <complex>
+#include <thread>
 #include "ComplexPlane.h"
 using namespace std;
 using namespace sf;
