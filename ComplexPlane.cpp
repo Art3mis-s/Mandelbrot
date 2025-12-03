@@ -31,10 +31,10 @@ void ComplexPlane::draw(RenderTarget& target, RenderStates states) const
 // this to process a subset of image rows.
 void ComplexPlane::computeRows(int startRow, int endRow)
 {
-    for (int j = 0; j < m_pixel_size.x; j++)
+    for (int i = startRow; i < endRow; i++)
+    {
+        for (int j = 0; j < m_pixel_size.x; j++)    
         {
-            for (int i = 0; i < m_pixel_size.y; i++)
-            {
                 // for example: j = 2, x = 1 then 
                 // vArray[6].position = (2.0, 1.0)
                 int index = j + i * m_pixel_size.x;
