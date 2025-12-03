@@ -28,6 +28,7 @@ void ComplexPlane::draw(RenderTarget& target, RenderStates states) const
     target.draw(m_vArray);
 }
 // Updated it for multithreading 
+// this to process a subset of image rows.
 void ComplexPlane::computeRows(int startRow, int endRow)
 {
     for (int j = 0; j < m_pixel_size.x; j++)
@@ -51,6 +52,8 @@ void ComplexPlane::computeRows(int startRow, int endRow)
         }
 }
 // Updated it for multithreading 
+// Added 4 Threads 
+// Each thread fills in its own part of the vertex array.
 void ComplexPlane::updateRender()
 {
     if (m_state == State::CALCULATING)
