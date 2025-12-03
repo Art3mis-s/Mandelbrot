@@ -8,7 +8,7 @@
 #include "ComplexPlane.h"
 using namespace std;
 using namespace sf;
-
+//test
 ComplexPlane::ComplexPlane(int pixelWidth, int pixelHeight)
 {
     // m_pixel_size : { pixelWidth, pixelHeight }
